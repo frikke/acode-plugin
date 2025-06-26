@@ -3,6 +3,7 @@
   "name": "Plugin",
   "main": "main.js",
   "version": "1.0.0",
+  "repository": null,
   "readme": "readme.md",
   "icon": "icon.png",
   "files": [],
