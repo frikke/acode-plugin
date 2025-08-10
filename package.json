@@ -7,11 +7,11 @@
   "author": "Acode Foundation",
   "license": "MIT",
   "dependencies": {
-    "@types/ace": "^0.0.50",
-    "html-tag-js": "^1.1.41"
+    "@types/ace": "^0.0.52",
+    "html-tag-js": "^2.4.15"
   },
   "devDependencies": {
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.25.8",
     "jszip": "^3.10.1"
   },
   "scripts": {

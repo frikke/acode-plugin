@@ -1,15 +1,13 @@
 {
+  "$schema": "https://acode.app/schema/plugin/v0.1.0.json",
   "id": "acode.plugin",
   "name": "Plugin",
   "main": "main.js",
   "version": "1.0.0",
-  "repository": "",
-  "readme": "readme.md",
+  "repository": "https://github.com/Acode-Foundation/acode-plugin.git",
   "icon": "icon.png",
-  "files": [],
-  "minVersionCode" : 290,
+  "minVersionCode": 290,
   "license": "MIT",
-  "changelogs": "changelogs.md",
   "keywords": [],
   "price": 0,
   "author": {
