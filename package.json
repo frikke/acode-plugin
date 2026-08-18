@@ -1,17 +1,17 @@
 {
   "name": "acode-plugin",
   "version": "1.0.0",
-  "description": "Template for Acode plugin",
-  "main": "src/main.js",
+  "description": "JavaScript template for Acode plugins",
+  "main": "dist/main.js",
   "repository": "https://github.com/Acode-Foundation/acode-plugin.git",
   "author": "Acode Foundation",
   "license": "MIT",
   "dependencies": {
-    "acode-plugin-types": "^1.11.7-patch.2",
+    "acode-plugin-types": "^1.12.9",
     "html-tag-js": "^2.4.15"
   },
   "devDependencies": {
-    "esbuild": "^0.25.8",
+    "esbuild": "^0.27.2",
     "jszip": "^3.10.1"
   },
   "scripts": {

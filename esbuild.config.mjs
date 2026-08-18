@@ -1,11 +1,29 @@
 import * as esbuild from "esbuild";
-import { exec } from "child_process";
+import { execFile } from "node:child_process";
+import os from "node:os";
+
+function serveUrls(hosts, port) {
+  const names = new Set(
+    (hosts?.length ? hosts : ["127.0.0.1"]).flatMap((host) => {
+      if (host === "0.0.0.0" || host === "::") return ["127.0.0.1"];
+      return [host.includes(":") ? `[${host}]` : host];
+    }),
+  );
+
+  for (const list of Object.values(os.networkInterfaces())) {
+    for (const net of list ?? []) {
+      if (net.internal || net.family !== "IPv4") continue;
+      names.add(net.address);
+    }
+  }
+
+  return [...names].map((host) => `http://${host}:${port}`);
+}
 
 const isServe = process.argv.includes("--serve");
 
-// Function to pack the ZIP file
 function packZip() {
-  exec("node ./pack-zip.js", (err, stdout, stderr) => {
+  execFile(process.execPath, ["./pack-zip.js"], (err, stdout) => {
     if (err) {
       console.error("Error packing zip:", err);
       return;
@@ -14,7 +32,6 @@ function packZip() {
   });
 }
 
-// Custom plugin to pack ZIP after build or rebuild
 const zipPlugin = {
   name: "zip-plugin",
   setup(build) {
@@ -24,31 +41,34 @@ const zipPlugin = {
   },
 };
 
-// Base build configuration
-let buildConfig = {
-  entryPoints: ["src/main.js"],
+const buildConfig = {
+  entryPoints: {
+    main: "src/main.js",
+  },
   bundle: true,
   minify: true,
+  platform: "browser",
+  target: ["chrome90"],
+  format: "iife",
   logLevel: "info",
   color: true,
   outdir: "dist",
   plugins: [zipPlugin],
 };
 
-// Main function to handle both serve and production builds
 (async function () {
   if (isServe) {
     console.log("Starting development server...");
 
-    // Watch and Serve Mode
     const ctx = await esbuild.context(buildConfig);
-
     await ctx.watch();
-    const { host, port } = await ctx.serve({
+    const { hosts, port } = await ctx.serve({
       servedir: ".",
       port: 3000,
     });
-
+    for (const url of serveUrls(hosts, port)) {
+      console.log(`Development server: ${url}`);
+    }
   } else {
     console.log("Building for production...");
     await esbuild.build(buildConfig);
